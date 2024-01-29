@@ -2,13 +2,13 @@ use proconio::input;
 
 fn main() {
     input! {
-        n: i64,
-        l: i64,
-        k: i64,
-        a: [i64; n],
+        n: i32,
+        l: i32,
+        k: i32,
+        a: [i32; n],
     }
 
-    let check = |x: i64| -> bool {
+    let check = |x: i32| -> bool {
         let mut num = 0;
         let mut prev = 0;
         for &val in a.iter() {
