@@ -1,7 +1,8 @@
-use proconio::input;
+use proconio::{fastout, input};
 
 const MOD: i32 = 1_000_000_007;
 
+#[fastout]
 fn main() {
     input! {
         n: usize,

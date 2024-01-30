@@ -1,7 +1,8 @@
 use std::cmp::min;
 
-use proconio::input;
+use proconio::{fastout, input};
 
+#[fastout]
 fn main() {
     input! {
         n: i32,
