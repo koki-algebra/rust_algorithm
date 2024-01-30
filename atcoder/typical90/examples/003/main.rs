@@ -1,9 +1,10 @@
 use std::vec;
 
-use proconio::input;
+use proconio::{fastout, input};
 
 type Graph = Vec<Vec<usize>>;
 
+#[fastout]
 fn main() {
     input! {
         n: usize,
