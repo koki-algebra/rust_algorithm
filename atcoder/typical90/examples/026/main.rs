@@ -54,20 +54,17 @@ fn main() {
 
 fn dfs(graph: &Vec<Vec<usize>>, colors: &mut Vec<Color>, cur: usize) {
     for nv in graph[cur].iter() {
-        match colors[*nv] {
-            Color::Unknown => {
-                match colors[cur] {
-                    Color::White => {
-                        colors[*nv] = Color::Black;
-                    }
-                    Color::Black => {
-                        colors[*nv] = Color::White;
-                    }
-                    Color::Unknown => (),
+        if let Color::Unknown = colors[*nv] {
+            match colors[cur] {
+                Color::White => {
+                    colors[*nv] = Color::Black;
                 }
-                dfs(graph, colors, *nv);
+                Color::Black => {
+                    colors[*nv] = Color::White;
+                }
+                Color::Unknown => (),
             }
-            _ => continue,
-        };
+            dfs(graph, colors, *nv);
+        }
     }
 }
