@@ -1,6 +1,6 @@
 use proconio::{fastout, input};
 
-#[derive(PartialEq, Clone)]
+#[derive(Clone)]
 enum Color {
     Unknown,
     Black,
@@ -29,11 +29,15 @@ fn main() {
     let mut whites = Vec::new();
     let mut blacks = Vec::new();
     for (v, color) in colors.iter().enumerate() {
-        if *color == Color::White {
-            whites.push(v + 1);
-        } else if *color == Color::Black {
-            blacks.push(v + 1);
-        }
+        match *color {
+            Color::White => {
+                whites.push(v + 1);
+            }
+            Color::Black => {
+                blacks.push(v + 1);
+            }
+            Color::Unknown => continue,
+        };
     }
 
     if whites.len() > blacks.len() {
@@ -50,13 +54,20 @@ fn main() {
 
 fn dfs(graph: &Vec<Vec<usize>>, colors: &mut Vec<Color>, cur: usize) {
     for nv in graph[cur].iter() {
-        if colors[*nv] == Color::Unknown {
-            if colors[cur] == Color::White {
-                colors[*nv] = Color::Black;
-            } else if colors[cur] == Color::Black {
-                colors[*nv] = Color::White;
+        match colors[*nv] {
+            Color::Unknown => {
+                match colors[cur] {
+                    Color::White => {
+                        colors[*nv] = Color::Black;
+                    }
+                    Color::Black => {
+                        colors[*nv] = Color::White;
+                    }
+                    Color::Unknown => (),
+                }
+                dfs(graph, colors, *nv);
             }
-            dfs(graph, colors, *nv);
-        }
+            _ => continue,
+        };
     }
 }
