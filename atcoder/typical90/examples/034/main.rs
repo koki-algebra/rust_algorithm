@@ -1,4 +1,4 @@
-use std::{cmp::max, collections::HashMap};
+use std::collections::HashMap;
 
 use proconio::{fastout, input};
 
@@ -12,8 +12,8 @@ fn main() {
 
     let mut right = 0;
     let mut kind = 0;
-    let mut num_cnts: HashMap<usize, usize> = HashMap::new();
     let mut ans = 0;
+    let mut num_cnts = HashMap::new();
 
     for left in 0..n {
         while right < n {
@@ -27,7 +27,7 @@ fn main() {
             right += 1;
         }
 
-        ans = max(ans, right - left);
+        ans = ans.max(right - left);
         if num_cnts.get(&a[left]) == Some(&1) {
             kind -= 1;
         }
