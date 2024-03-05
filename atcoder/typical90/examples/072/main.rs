@@ -36,7 +36,7 @@ fn dfs(
         return 0;
     }
 
-    seen[px as usize][py as usize] = true;
+    seen[px][py] = true;
     let mut ret = -isize::MAX;
 
     let dx: [i32; 4] = [0, 1, 0, -1];
