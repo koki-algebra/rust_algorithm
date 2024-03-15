@@ -3,34 +3,38 @@ use proconio::{fastout, input};
 #[fastout]
 fn main() {
     input! {
-        n: i32,
-        l: i32,
-        k: i32,
-        a: [i32; n],
+        n: usize,
+        l: isize,
+        k: isize,
+        a: [isize; n],
     }
 
-    let check = |x: i32| -> bool {
-        let mut num = 0;
+    // 全てのピースの長さを x 以上にできるか？
+    let check = |x: isize| -> bool {
+        // 前回の切れ目
         let mut prev = 0;
-        for &val in a.iter() {
-            if val - prev >= x {
-                num += 1;
-                prev = val;
+        // ピースの数
+        let mut cnt = 0;
+
+        for i in 0..n {
+            if a[i] - prev >= x {
+                prev = a[i];
+                cnt += 1;
             }
         }
 
         if l - prev >= x {
-            num += 1;
+            cnt += 1;
         }
 
-        num >= k + 1
+        return cnt >= k + 1;
     };
 
-    // Binary Search
+    // binary search
     let mut left = -1;
-    let mut right = l + 1;
+    let mut right = l;
     while right - left > 1 {
-        let mid = (left + right) / 2;
+        let mid = left + (right - left) / 2;
         if check(mid) {
             left = mid;
         } else {
@@ -38,5 +42,5 @@ fn main() {
         }
     }
 
-    println!("{left}");
+    println!("{}", left);
 }
