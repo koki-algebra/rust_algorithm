@@ -11,7 +11,7 @@ fn main() {
         edge: [(usize, usize); n-1],
     }
 
-    let mut graph: Vec<Vec<usize>> = vec![Vec::new(); n];
+    let mut graph = vec![Vec::<usize>::new(); n];
 
     for (a, b) in edge {
         graph[a - 1].push(b - 1);
@@ -40,10 +40,10 @@ fn main() {
 }
 
 fn dfs(graph: &Graph, dist: &mut Vec<isize>, cur: usize) {
-    for nv in &graph[cur] {
-        if dist[*nv] == -1 {
-            dist[*nv] = dist[cur] + 1;
-            dfs(graph, dist, *nv);
+    for &nv in graph[cur].iter() {
+        if dist[nv] == -1 {
+            dist[nv] = dist[cur] + 1;
+            dfs(graph, dist, nv);
         }
     }
 }
