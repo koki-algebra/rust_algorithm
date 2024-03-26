@@ -1,7 +1,7 @@
 use std::mem::swap;
 
 pub struct UnionFind {
-    parents: Vec<i32>,
+    parents: Vec<isize>,
     ranks: Vec<usize>,
 }
 
@@ -25,14 +25,14 @@ impl UnionFind {
         if self.ranks[x] == self.ranks[y] {
             self.ranks[y] += 1;
         }
-        self.parents[x] = y as i32;
+        self.parents[x] = y as isize;
     }
 
     pub fn find(&mut self, x: usize) -> usize {
         if self.parents[x] < 0 {
             return x;
         }
-        self.parents[x] = self.find(self.parents[x] as usize) as i32;
+        self.parents[x] = self.find(self.parents[x] as usize) as isize;
 
         return self.parents[x] as usize;
     }
