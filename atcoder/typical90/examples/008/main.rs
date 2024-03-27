@@ -1,28 +1,28 @@
-use proconio::{fastout, input};
+use proconio::{fastout, input, marker::Chars};
 
-const MOD: i32 = 1_000_000_007;
+const MOD: usize = 1000000007;
 
 #[fastout]
 fn main() {
     input! {
         n: usize,
-        s: String,
+        s: Chars,
     }
 
-    let t: Vec<char> = String::from("atcoder").chars().collect();
-    let m = t.len();
+    let t: Vec<char> = "atcoder".chars().collect();
 
-    let mut dp = vec![vec![0; m + 1]; n + 1];
+    // S の i 文字目までで, T の j 文字目までを作る方法の数
+    let mut dp = vec![vec![0; t.len() + 1]; n + 1];
     dp[0][0] = 1;
-
-    for (i, si) in s.chars().enumerate() {
-        for j in 0..=m {
-            dp[i + 1][j] = (dp[i + 1][j] + dp[i][j]) % MOD;
-            if j < m && si == t[j] {
-                dp[i + 1][j + 1] = (dp[i + 1][j + 1] + dp[i][j]) % MOD;
+    for i in 1..=n {
+        for j in 0..=t.len() {
+            dp[i][j] = dp[i - 1][j];
+            if j > 0 && s[i - 1] == t[j - 1] {
+                dp[i][j] += dp[i - 1][j - 1];
+                dp[i][j] %= MOD;
             }
         }
     }
 
-    println!("{}", dp[n][m]);
+    println!("{}", dp[n][t.len()])
 }
