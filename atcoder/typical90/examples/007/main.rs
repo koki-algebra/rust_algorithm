@@ -1,32 +1,30 @@
-use std::cmp::min;
-
 use proconio::{fastout, input};
 
 #[fastout]
 fn main() {
     input! {
-        n: i32,
-        mut a: [i32; n],
-        q: i32,
-        b: [i32; q],
+        n: usize,
+        mut a: [isize; n],
+        q: usize,
+        queries: [isize; q],
     }
 
     a.sort();
 
-    for v in &b {
-        // binary search
-        let index = match a.binary_search(v) {
-            Ok(index) => index,
-            Err(index) => index,
-        };
-
-        let mut ans = u32::MAX;
-        if index != a.len() {
-            ans = min(ans, v.abs_diff(a[index]));
+    for &b in queries.iter() {
+        match a.binary_search(&b) {
+            Ok(_) => {
+                println!("{}", 0);
+            }
+            Err(index) => {
+                if index == n {
+                    println!("{}", (a[n - 1] - b).abs());
+                } else if index == 0 {
+                    println!("{}", (a[0] - b).abs());
+                } else {
+                    println!("{}", (a[index] - b).abs().min((a[index - 1] - b).abs()));
+                }
+            }
         }
-        if index >= 1 {
-            ans = min(ans, v.abs_diff(a[index - 1]));
-        }
-        println!("{ans}");
     }
 }
