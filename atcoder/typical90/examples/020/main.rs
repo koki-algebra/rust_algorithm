@@ -16,10 +16,10 @@ fn main() {
 }
 
 fn pow(base: usize, exp: usize) -> usize {
-    let mut ans = 1;
-    for _i in 0..exp {
-        ans *= base;
+    let mut ret = 1;
+    for _ in 0..exp {
+        ret *= base;
     }
 
-    return ans;
+    ret
 }
