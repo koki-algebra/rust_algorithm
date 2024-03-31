@@ -15,7 +15,7 @@ fn main() {
     }
 
     let mut graph = vec![Vec::new(); n];
-    for (a, b) in edge {
+    for &(a, b) in edge.iter() {
         graph[a - 1].push(b - 1);
         graph[b - 1].push(a - 1);
     }
@@ -53,18 +53,18 @@ fn main() {
 }
 
 fn dfs(graph: &Vec<Vec<usize>>, colors: &mut Vec<Color>, cur: usize) {
-    for nv in graph[cur].iter() {
-        if let Color::Unknown = colors[*nv] {
+    for &nv in graph[cur].iter() {
+        if let Color::Unknown = colors[nv] {
             match colors[cur] {
                 Color::White => {
-                    colors[*nv] = Color::Black;
+                    colors[nv] = Color::Black;
                 }
                 Color::Black => {
-                    colors[*nv] = Color::White;
+                    colors[nv] = Color::White;
                 }
                 Color::Unknown => (),
             }
-            dfs(graph, colors, *nv);
+            dfs(graph, colors, nv);
         }
     }
 }
