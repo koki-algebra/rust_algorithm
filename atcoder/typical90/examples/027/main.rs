@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::HashSet;
 
 use proconio::{fastout, input};
 
@@ -9,11 +9,11 @@ fn main() {
         s: [String; n],
     }
 
-    let mut users = HashMap::new();
-    for (i, user) in s.iter().enumerate() {
-        if !users.contains_key(user) {
-            println!("{}", i + 1);
-            users.insert(user, ());
+    let mut users = HashSet::new();
+    for (day, name) in s.iter().enumerate() {
+        if !users.contains(name) {
+            println!("{}", day + 1);
+            users.insert(name.clone());
         }
     }
 }
