@@ -6,33 +6,33 @@ const MAX: usize = 1000;
 fn main() {
     input! {
         n: usize,
-        rectangles: [(usize, usize, usize, usize); n],
+        points: [(usize, usize, usize, usize); n],
     }
 
-    let mut sums: Vec<Vec<i32>> = vec![vec![0; MAX + 1]; MAX + 1];
-
-    for (lx, ly, rx, ry) in rectangles {
-        sums[lx][ly] += 1;
-        sums[lx][ry] -= 1;
-        sums[rx][ry] += 1;
-        sums[rx][ly] -= 1;
+    let mut area: [[i32; MAX + 1]; MAX + 1] = [[0; MAX + 1]; MAX + 1];
+    for &(lx, ly, rx, ry) in points.iter() {
+        area[ly][lx] += 1;
+        area[ry][lx] -= 1;
+        area[ly][rx] -= 1;
+        area[ry][rx] += 1;
     }
 
-    for i in 0..=MAX {
-        for j in 0..MAX {
-            sums[i][j + 1] += sums[i][j];
+    for y in 0..=MAX {
+        for x in 0..MAX {
+            area[y][x + 1] += area[y][x];
         }
     }
-    for j in 0..=MAX {
-        for i in 0..MAX {
-            sums[i + 1][j] += sums[i][j];
+
+    for x in 0..=MAX {
+        for y in 0..MAX {
+            area[y + 1][x] += area[y][x];
         }
     }
 
     let mut ans = vec![0; n + 1];
-    for i in 0..=MAX {
-        for j in 0..=MAX {
-            ans[sums[i][j] as usize] += 1;
+    for y in 0..=MAX {
+        for x in 0..=MAX {
+            ans[area[y][x] as usize] += 1;
         }
     }
 
