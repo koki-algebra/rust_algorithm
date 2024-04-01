@@ -1,4 +1,4 @@
-use std::{cmp::min, collections::HashMap, vec};
+use std::{collections::HashSet, vec};
 
 use proconio::{fastout, input};
 
@@ -13,26 +13,23 @@ fn main() {
         pairs: [(usize, usize); m],
     }
 
-    let mut dangerous: Vec<HashMap<usize, ()>> = vec![HashMap::new(); n];
-    for (x, y) in pairs.iter() {
-        dangerous[x - 1].insert(y - 1, ());
-        dangerous[y - 1].insert(x - 1, ());
+    let mut dangerous = vec![HashSet::new(); n];
+    for &(x, y) in pairs.iter() {
+        dangerous[x - 1].insert(y - 1);
+        dangerous[y - 1].insert(x - 1);
     }
 
-    let mut p = vec![0; n];
-    for i in 0..n {
-        p[i] = i;
-    }
+    let mut p: Vec<usize> = (0..n).collect();
 
     let mut ans: usize = MAX;
     while {
         if is_valid(&p, &dangerous) {
             let mut val = 0;
-            for (i, v) in p.iter().enumerate() {
-                val += a[*v][i];
+            for (i, &v) in p.iter().enumerate() {
+                val += a[v][i];
             }
 
-            ans = min(ans, val);
+            ans = ans.min(val);
         }
 
         next_permutation(&mut p)
@@ -72,9 +69,9 @@ fn next_permutation<T: Ord>(p: &mut [T]) -> bool {
     true
 }
 
-fn is_valid(p: &[usize], dangerous: &[HashMap<usize, ()>]) -> bool {
+fn is_valid(p: &[usize], dangerous: &[HashSet<usize>]) -> bool {
     for i in 0..p.len() - 1 {
-        if dangerous[p[i]].contains_key(&p[i + 1]) {
+        if dangerous[p[i]].contains(&p[i + 1]) {
             return false;
         }
     }
