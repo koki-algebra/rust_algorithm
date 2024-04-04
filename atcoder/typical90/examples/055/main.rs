@@ -11,11 +11,11 @@ fn main() {
 
     let mut ans = 0;
     for i in 0..n {
-        for j in 0..i {
-            for k in 0..j {
-                for l in 0..k {
-                    for m in 0..l {
-                        if a[i] * a[j] * a[k] * a[l] * a[m] % p == q {
+        for j in i + 1..n {
+            for k in j + 1..n {
+                for l in k + 1..n {
+                    for m in l + 1..n {
+                        if a[i] * a[j] % p * a[k] % p * a[l] % p * a[m] % p == q {
                             ans += 1;
                         }
                     }
