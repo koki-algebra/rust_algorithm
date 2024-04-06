@@ -6,3 +6,6 @@ pub use prime::*;
 
 mod dijkstra;
 pub use dijkstra::*;
+
+mod pow;
+pub use pow::*;
