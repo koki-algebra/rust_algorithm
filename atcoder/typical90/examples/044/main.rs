@@ -3,27 +3,24 @@ use proconio::{fastout, input};
 #[fastout]
 fn main() {
     input! {
-        n: isize,
-        q: isize,
-        mut a: [isize; n],
-        queries: [(isize, isize, isize); q],
+        n: usize,
+        q: usize,
+        mut a: [usize; n],
+        queries: [(usize, usize, usize); q],
     }
 
     let mut top = 0;
     for &(t, x, y) in queries.iter() {
-        let x = (x - 1 + top) % n;
-        let y = (y - 1 + top) % n;
-        match t {
-            1 => {
-                a.swap(x as usize, y as usize);
+        if t == 1 {
+            a.swap((x - 1 + top) % n, (y - 1 + top) % n);
+        } else if t == 2 {
+            if top > 0 {
+                top -= 1;
+            } else {
+                top = n - 1;
             }
-            2 => {
-                top = (top + n - 1) % n;
-            }
-            3 => {
-                println!("{}", a[x as usize]);
-            }
-            _ => (),
-        };
+        } else {
+            println!("{}", a[(x - 1 + top) % n]);
+        }
     }
 }
