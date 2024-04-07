@@ -7,63 +7,39 @@ fn main() {
     input! {
         h: usize,
         w: usize,
-        p: [[isize; w]; h],
+        p: [[usize; w]; h],
     }
 
-    let mut ans = -1;
-    for bit in 0..1 << h {
-        // key: number, value: count
-        let mut m = HashMap::new();
+    let mut ans = 0;
 
-        for col in 0..w {
-            let mut num = -1;
-            let mut valid = true;
-            for row in 0..h {
-                if bit >> row & 1 == 1 {
-                    if num == -1 {
-                        num = p[row][col];
-                    } else if p[row][col] != num {
-                        valid = false;
-                    }
-                }
-            }
-
-            if valid && num != -1 {
-                *m.entry(num).or_insert(0) += 1;
-            }
-        }
-
-        // number of columns
-        let cnt_w = maximum_same(m);
-
-        // number of rows
-        let mut cnt_h = 0;
+    for bit in 1..1 << h {
+        let mut rows = Vec::new();
         for row in 0..h {
             if bit >> row & 1 == 1 {
-                cnt_h += 1;
+                rows.push(row);
             }
         }
 
-        chmax(&mut ans, cnt_h * cnt_w);
+        let mut nums = HashMap::new();
+
+        for col in 0..w {
+            let mut is_valid = true;
+            let num = p[rows[0]][col];
+            for &row in rows.iter() {
+                if p[row][col] != num {
+                    is_valid = false;
+                    break;
+                }
+            }
+            if is_valid {
+                *nums.entry(num).or_insert(0) += 1;
+            }
+        }
+
+        if let Some(&col_cnt) = nums.values().max() {
+            ans = ans.max(rows.len() * col_cnt);
+        }
     }
 
     println!("{}", ans);
-}
-
-fn maximum_same(m: HashMap<isize, isize>) -> isize {
-    let mut ret = -1;
-    for (_key, &value) in m.iter() {
-        chmax(&mut ret, value);
-    }
-
-    ret
-}
-
-fn chmax(a: &mut isize, b: isize) -> bool {
-    if *a < b {
-        *a = b;
-        true
-    } else {
-        false
-    }
 }
