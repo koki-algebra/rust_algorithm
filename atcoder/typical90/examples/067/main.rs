@@ -15,27 +15,30 @@ fn main() {
     println!("{}", n);
 }
 
-fn to_decimal(n: &String, base: u32) -> usize {
+fn to_decimal(n: &str, base: usize) -> usize {
     let mut ret = 0;
-
-    for c in n.chars() {
-        let digit = c.to_digit(base).unwrap() as usize;
-        ret = ret * 8 + digit;
+    let mut x = 1;
+    for c in n.chars().rev() {
+        if let Some(digit) = c.to_digit(base as u32) {
+            ret += x * digit as usize;
+        }
+        x *= base;
     }
 
     ret
 }
 
-fn parse_decimal(mut n: usize, base: usize) -> String {
+fn parse_decimal(n: usize, base: usize) -> String {
     if n == 0 {
-        return String::from("0");
+        return "0".to_string();
     }
 
-    let mut ret = String::from("");
-    while n != 0 {
-        let c = (n % base).to_string();
-        ret.insert_str(0, &c);
-        n /= base;
+    let mut num = n;
+    let mut ret = String::new();
+    while num > 0 {
+        let c = (num % base).to_string();
+        ret = format!("{}{}", c, ret);
+        num /= base;
     }
 
     ret
