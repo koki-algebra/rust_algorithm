@@ -6,20 +6,20 @@ fn main() {
         k: usize,
     }
 
-    // k の約数を列挙
-    let divisors = enumerate_divisors(k);
+    let divisors = get_divisors(k);
 
     let mut ans = 0;
     for i in 0..divisors.len() {
         for j in i..divisors.len() {
-            // divisors[i] * divisors[j] が最大 10^24 なのでオーバーフローを避ける
-            if k / divisors[i] < divisors[j] {
+            let a = divisors[i];
+            let b = divisors[j];
+            if k / a < b {
                 continue;
             }
-            if k % (divisors[i] * divisors[j]) != 0 {
+            if k % (a * b) != 0 {
                 continue;
             }
-            if divisors[j] <= k / (divisors[i] * divisors[j]) {
+            if b <= k / (a * b) {
                 ans += 1;
             }
         }
@@ -28,19 +28,20 @@ fn main() {
     println!("{}", ans);
 }
 
-fn enumerate_divisors(n: usize) -> Vec<usize> {
-    let mut divisors = Vec::new();
+fn get_divisors(n: usize) -> Vec<usize> {
+    let mut ret = Vec::new();
     let mut p = 1;
     while p * p <= n {
         if n % p == 0 {
-            divisors.push(p);
-            if n / p != p {
-                divisors.push(n / p);
+            ret.push(p);
+            let rem = n / p;
+            if rem != p {
+                ret.push(rem);
             }
         }
         p += 1;
     }
 
-    divisors.sort();
-    divisors
+    ret.sort();
+    ret
 }
