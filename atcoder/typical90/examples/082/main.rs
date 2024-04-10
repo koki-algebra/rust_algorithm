@@ -45,28 +45,15 @@ fn f(n: usize, m: usize) -> usize {
 fn pow(base: usize, exp: usize, m: usize) -> usize {
     let mut ret = 1;
     let mut x = base;
-    let digits = count_binary_digits(exp);
-    for i in 0..digits {
-        if exp >> i & 1 == 1 {
+    let mut rem = exp;
+
+    while rem > 0 {
+        if rem & 1 == 1 {
             ret = ret * x % m;
         }
         x = x * x % m;
+        rem >>= 1;
     }
 
     ret
-}
-
-fn count_binary_digits(n: usize) -> usize {
-    if n == 0 {
-        return 1;
-    }
-    let mut cnt = 0;
-    let mut num = n;
-
-    while num > 0 {
-        num >>= 1;
-        cnt += 1;
-    }
-
-    cnt
 }
