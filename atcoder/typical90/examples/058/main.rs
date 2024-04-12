@@ -1,50 +1,43 @@
-use proconio::input;
+use std::collections::HashMap;
+
+use proconio::{fastout, input};
 
 const MOD: usize = 100000;
 
+#[fastout]
 fn main() {
     input! {
-        n: usize,
-        mut k: isize,
+        mut n: usize,
+        k: usize,
     }
 
-    let mut nexts = vec![0; MOD];
-    let mut timestamps: Vec<isize> = vec![-1; MOD];
-    for i in 0..MOD {
-        nexts[i] = (i + digit_sum(i)) % MOD;
+    let mut nums = Vec::new();
+    let mut seen = HashMap::new();
+    let mut cnt = 0;
+    while !seen.contains_key(&n) {
+        nums.push(n);
+        seen.insert(n, cnt);
+        n = (n + digit_sum(n)) % MOD;
+        cnt += 1;
     }
 
-    let mut pos = n;
-    let mut index = 0;
-    while timestamps[pos] == -1 {
-        timestamps[pos] = index;
-        pos = nexts[pos];
-        index += 1;
-    }
-
-    // the timing of entering the cycle
-    let find = timestamps[pos];
-
-    // cycle length
-    let cycle = index - find;
-
-    if k >= find {
-        k = (k - find) % cycle + find;
-    }
-
-    for i in 0..MOD {
-        if timestamps[i] == k {
-            println!("{}", i);
+    // find: Index of the beginning of the cycle
+    if let Some(&find) = seen.get(&n) {
+        if k < find {
+            println!("{}", nums[k]);
             return;
         }
+        let cycle = &nums[find..];
+        println!("{}", cycle[(k - find) % cycle.len()]);
     }
 }
 
-fn digit_sum(mut x: usize) -> usize {
+fn digit_sum(x: usize) -> usize {
+    let mut rem = x;
     let mut sum = 0;
-    while x != 0 {
-        sum += x % 10;
-        x /= 10;
+    while rem != 0 {
+        sum += rem % 10;
+        rem /= 10;
     }
 
     sum
