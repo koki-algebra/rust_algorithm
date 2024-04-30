@@ -9,3 +9,6 @@ pub use dijkstra::*;
 
 mod pow;
 pub use pow::*;
+
+mod binary_search;
+pub use binary_search::*;
